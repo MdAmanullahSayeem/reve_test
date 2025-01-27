@@ -18,6 +18,7 @@
   margin: auto;
   top: 0;
   bottom: 0;
+  border-radius: 3px;
 }
 .input-range.edit .slider-track {
   border-radius: 3px;

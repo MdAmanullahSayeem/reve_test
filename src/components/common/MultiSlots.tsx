@@ -1,33 +1,51 @@
-import { DefaultProps, RangeDataType } from '@/types';
+import { DefaultProps } from '@/types';
 import InputRange from './InputRange';
 
+import Section from '../ui/Section';
+import MinSlot from './MinSlot';
+import HourSlot from './HourSlot';
+import AddSlot from './AddSlot';
+import { useSlotContext } from '@/hooks/useSlotContext';
+
 interface PropTypes extends DefaultProps {
-  slots: RangeDataType[];
+  day: string;
 }
 
-export default function MultiSlots({ slots, children }: PropTypes) {
+export default function MultiSlots({ day }: PropTypes) {
+  const { slotContext } = useSlotContext();
+  const { options, slots } = slotContext[day];
+  const { isAddButton, isDashSlot, isMinSlot, isHourSlot } = options;
+
   return (
     <>
-      {/* <AddSlotForm onSubmit={(data) => console.log(data)}>
-            <div className="w-96 py-10">
-              <InputRange range={slots[1]} />
-              <div className="mt-4">
-                <MinSlot strokeWidth={8} />
-              </div>
-              <div className="mt-[3px]">
-                <MinSlot strokeWidth={2} />
-              </div>
-              <HourSlot />
-            </div>
-          </AddSlotForm> */}
-      <div>
+      <div className="relative">
         {slots?.map((slot, i) => (
           <div key={i} className={`w-full`}>
-            <InputRange editMode={false} range={slot} />
+            <InputRange editMode={true} range={slot} />
           </div>
         ))}
+        {!slots.length && (
+          <div className={`w-full`}>
+            <InputRange editMode={false} isEmpty={true} />
+          </div>
+        )}
+        {isAddButton && <AddSlot day={day} />}
       </div>
-      {children}
+      {isMinSlot && (
+        <Section className="pt-4">
+          <MinSlot strokeWidth={8} />
+        </Section>
+      )}
+      {isDashSlot && (
+        <Section className="">
+          <MinSlot strokeWidth={2} />
+        </Section>
+      )}
+      {isHourSlot && (
+        <Section>
+          <HourSlot />
+        </Section>
+      )}
     </>
   );
 }

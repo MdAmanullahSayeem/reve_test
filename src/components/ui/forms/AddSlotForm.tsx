@@ -16,10 +16,7 @@ export default function AddSlotForm({ onSubmit, children }: PropTypes) {
   );
 
   return (
-    <form
-      className="p-6 shadow-md border border-gray-200"
-      onSubmit={(e) => handleSubmit(e)}
-    >
+    <form className="" onSubmit={(e) => handleSubmit(e)}>
       {children}
       <button
         className="px-2 py-1 border outline-2 hover:outline hover:border-blue-200 hover:outline-blue-200 rounded-md text-blue-600 border-blue-600"

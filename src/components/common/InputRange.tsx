@@ -12,6 +12,7 @@ type PropTypes = {
   min?: number;
   max?: number;
   step?: number;
+  isEmpty?: boolean;
 };
 
 export default function InputRange({
@@ -23,6 +24,7 @@ export default function InputRange({
   max = 1440,
   step = 10,
   range = { start: 60, end: 75 },
+  isEmpty = false,
 }: PropTypes) {
   const [currentRange, updateCurrentRange] = useState({ ...range });
   const { start, end } = currentRange;
@@ -32,10 +34,16 @@ export default function InputRange({
   const sliderTrack = useRef<HTMLDivElement | null>(null);
   const startRef = useRef<HTMLDivElement | null>(null);
   const endRef = useRef<HTMLDivElement | null>(null);
+  const emptyRef = useRef<HTMLDivElement | null>(null);
   const startProps = minToTimeString(start);
   const endProps = minToTimeString(end);
 
   const fillColor = useCallback(() => {
+    if (isEmpty && emptyRef.current) {
+      emptyRef.current.style.background = track;
+      emptyRef.current.style.height = '6px';
+      return;
+    }
     if (
       !slider1.current ||
       !slider2.current ||
@@ -51,11 +59,26 @@ export default function InputRange({
     startRef.current.style.left = `calc(${percent1}% + ${reduce1}px)`;
     endRef.current.style.left = `calc(${percent2}% + ${reduce2}px)`;
     sliderTrack.current.style.background = `linear-gradient(to right, ${track} ${percent1}% ,${fill} ${percent1}%, ${fill} ${percent2}% , ${track} ${percent2}%, ${track} 100%)`;
-  }, [fill, track, start, end, max]);
+  }, [fill, track, start, end, max, isEmpty]);
 
   useEffect(() => {
     fillColor();
   }, [fillColor]);
+
+  if (isEmpty)
+    return (
+      <div
+        ref={emptyRef}
+        className={`input-range rounded-[3px] isEmpty relative bg-[${track}] ${
+          editMode && 'edit'
+        }`}
+      >
+        <div className="absolute left-[30%] bottom-[24px] whitespace-nowrap text-[#253748] text-[13px]">
+          Business is offline{' '}
+          <span className="text-[#909FAC]">( +Add business hour)</span>
+        </div>
+      </div>
+    );
 
   return (
     <div className={`input-range relative ${editMode && 'edit'}`}>
