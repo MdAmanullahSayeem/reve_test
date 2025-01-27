@@ -12,11 +12,11 @@ export default function HourSlot({ color = '#909FAC', hourGap = 2 }) {
     >
       {[...new Array(totalHour)].map((_, i) =>
         i * hourGap === 0 || i * hourGap == 24 ? (
-          <p>12 AM</p>
+          <p key={i}>12 AM</p>
         ) : i * hourGap < 12 ? (
-          <p>{i * hourGap} AM</p>
+          <p key={i}>{i * hourGap} AM</p>
         ) : (
-          <p>{i * hourGap} PM</p>
+          <p key={i}>{i * hourGap} PM</p>
         )
       )}
     </div>

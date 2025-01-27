@@ -1,42 +1,29 @@
 import HourSlot from '@/components/common/HourSlot';
-import InputRange from '@/components/common/InputRange';
 import MinSlot from '@/components/common/MinSlot';
-import AddSlotForm from '@/components/ui/forms/AddSlotForm';
-import { useState } from 'react';
+import MultiSlots from '@/components/common/MultiSlots';
+import Section from '@/components/ui/Section';
+
 const defaultSlots = [
-  { start: 20, end: 50 },
-  { start: 70, end: 100 },
+  { start: 100, end: 500 },
+  { start: 700, end: 1400 },
 ];
+
 export default function Home() {
-  const [slots, updatedSlots] = useState(defaultSlots);
   return (
     <div className="">
-      <AddSlotForm onSubmit={(data) => console.log(data)}>
-        <div className="w-96 py-10">
-          <InputRange />
-          <div className="mt-4">
-            <MinSlot />
+      <div className="mt-10">
+        <MultiSlots slots={defaultSlots}>
+          <Section className="pt-4">
+            <MinSlot strokeWidth={8} />
+          </Section>
+          <Section>
+            <MinSlot strokeWidth={2} />
+          </Section>
+          <Section>
             <HourSlot />
-          </div>
-        </div>
-      </AddSlotForm>
-
-      <div className="flex">
-        {slots?.map((_, i) => (
-          <div key={i} className={`w-16`}>
-            <InputRange editMode={false} range={{ start: 0, end: 100 }} />
-          </div>
-        ))}
+          </Section>
+        </MultiSlots>
       </div>
-      {/* <div className="w-52">
-        <InputRange />
-      </div>
-      <div className="w-52">
-        <InputRange />
-      </div>
-      <div className="w-52">
-        <InputRange />
-      </div> */}
     </div>
   );
 }

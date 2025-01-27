@@ -23,14 +23,23 @@
   border-radius: 3px;
 }
 
-.input-range .slider-track > div {
+.input-range .label {
   width: 2px;
   height: 8px;
   background-color: #266aff;
   content: '';
   position: absolute;
+  transform: translateX(-50%);
   top: 18px;
 }
+.input-range .label > div {
+  font-size: 14px;
+  white-space: nowrap;
+  position: absolute;
+  bottom: 52px;
+  left: -20px;
+}
+
 .input-range input[type='range']::-webkit-slider-runnable-track {
   -webkit-appearance: none;
   height: 6px;

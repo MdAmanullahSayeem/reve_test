@@ -1,10 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 
-export default function MinSlot({
-  stroke = '#EFF2F4',
-  strokeWidth = 4,
-  gap = 15,
-}) {
+export default function MinSlot({ stroke = '#EFF2F4', strokeWidth = 8 }) {
   const [width, setWidth] = useState(0);
   const sliderTrack = useRef<HTMLDivElement | null>(null);
 
@@ -15,8 +11,13 @@ export default function MinSlot({
   }, []);
 
   return (
-    <div ref={sliderTrack} className="w-full h-2">
-      <svg width={`${width}`} xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <div ref={sliderTrack} className="w-full">
+      <svg
+        width={`${width}`}
+        height={10}
+        xmlns="http://www.w3.org/2000/svg"
+        version="1.1"
+      >
         <line
           x1={0}
           y1={0}

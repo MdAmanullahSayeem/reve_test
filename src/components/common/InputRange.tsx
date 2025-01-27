@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import './InputRange.css';
 import { RangeDataType } from '@/types';
+import { minToTimeString } from '@/utils/helper';
 
 type PropTypes = {
   fill?: string;
@@ -17,9 +18,9 @@ export default function InputRange({
   fill = '#266AFF',
   track = '#E6EAED',
   editMode = true,
-  minGap = 10,
+  minGap = 20,
   min = 0,
-  max = 360,
+  max = 1440,
   step = 10,
   range = { start: 60, end: 75 },
 }: PropTypes) {
@@ -31,6 +32,8 @@ export default function InputRange({
   const sliderTrack = useRef<HTMLDivElement | null>(null);
   const startRef = useRef<HTMLDivElement | null>(null);
   const endRef = useRef<HTMLDivElement | null>(null);
+  const startProps = minToTimeString(start);
+  const endProps = minToTimeString(end);
 
   const fillColor = useCallback(() => {
     if (
@@ -41,12 +44,14 @@ export default function InputRange({
       !endRef.current
     )
       return;
-    const percent1 = (start / Number(slider1.current.max)) * 100;
-    const percent2 = (end / Number(slider1.current.max)) * 100;
-    startRef.current.style.left = `${start + 10}px`;
-    endRef.current.style.left = `${end + 10}px`;
+    const percent1 = (start / max) * 100;
+    const percent2 = (end / max) * 100;
+    const reduce1 = 10 - 20 * percent1 * 0.01;
+    const reduce2 = 10 - 20 * percent2 * 0.01;
+    startRef.current.style.left = `calc(${percent1}% + ${reduce1}px)`;
+    endRef.current.style.left = `calc(${percent2}% + ${reduce2}px)`;
     sliderTrack.current.style.background = `linear-gradient(to right, ${track} ${percent1}% ,${fill} ${percent1}%, ${fill} ${percent2}% , ${track} ${percent2}%, ${track} 100%)`;
-  }, [fill, track, start, end]);
+  }, [fill, track, start, end, max]);
 
   useEffect(() => {
     fillColor();
@@ -54,11 +59,16 @@ export default function InputRange({
 
   return (
     <div className={`input-range relative ${editMode && 'edit'}`}>
-      <div ref={sliderTrack} className="slider-track">
-        <div ref={startRef}>
-          {/* <p>{((start * 24) / max).toFixed(2)}</p> */}
+      <div ref={sliderTrack} className="slider-track"></div>
+      <div className="label" ref={startRef}>
+        <div>
+          {startProps.hr}:{startProps.min} {startProps.amp}
         </div>
-        <div ref={endRef}></div>
+      </div>
+      <div className="label" ref={endRef}>
+        <div>
+          {endProps.hr}:{endProps.min} {endProps.amp}
+        </div>
       </div>
       <input
         ref={slider1}
