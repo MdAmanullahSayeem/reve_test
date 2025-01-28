@@ -13,6 +13,7 @@ type PropTypes = {
   max?: number;
   step?: number;
   isEmpty?: boolean;
+  clipPath?: boolean;
 };
 
 export default function InputRange({
@@ -25,6 +26,7 @@ export default function InputRange({
   step = 10,
   range = { start: 60, end: 75 },
   isEmpty = false,
+  clipPath = false,
 }: PropTypes) {
   const [currentRange, updateCurrentRange] = useState({ ...range });
   const { start, end } = currentRange;
@@ -59,7 +61,10 @@ export default function InputRange({
     startRef.current.style.left = `calc(${percent1}% + ${reduce1}px)`;
     endRef.current.style.left = `calc(${percent2}% + ${reduce2}px)`;
     sliderTrack.current.style.background = `linear-gradient(to right, ${track} ${percent1}% ,${fill} ${percent1}%, ${fill} ${percent2}% , ${track} ${percent2}%, ${track} 100%)`;
-  }, [fill, track, start, end, max, isEmpty]);
+    if (clipPath) {
+      sliderTrack.current.style.clipPath = `inset(0 0 0 ${percent1}%)`;
+    }
+  }, [fill, track, start, end, max, isEmpty, clipPath]);
 
   useEffect(() => {
     fillColor();
@@ -69,7 +74,7 @@ export default function InputRange({
     return (
       <div
         ref={emptyRef}
-        className={`input-range rounded-[3px] isEmpty relative bg-[${track}] ${
+        className={`input-range isEmpty rounded-[3px] relative bg-[${track}] ${
           editMode && 'edit'
         }`}
       >

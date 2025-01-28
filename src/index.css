@@ -16,4 +16,14 @@
 }
 
 @layer components {
+  .over-flow-container::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .over-flow-container::-webkit-scrollbar-track {
+    @apply bg-slate-300;
+  }
+  .over-flow-container::-webkit-scrollbar-thumb {
+    @apply bg-slate-700 rounded-sm;
+  }
 }

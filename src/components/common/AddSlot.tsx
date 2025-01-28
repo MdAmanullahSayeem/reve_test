@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogTitle,
   DialogTrigger,
@@ -13,6 +14,7 @@ import { RangeDataType } from '@/types';
 import { useSlotContext } from '@/hooks/useSlotContext';
 
 export default function AddSlot({ day }: { day: string }) {
+  const [open, setOpen] = useState(false);
   const { updateSlotContext, slotContext } = useSlotContext();
   const { slots, options } = slotContext[day];
   const [error, setError] = useState('');
@@ -30,13 +32,17 @@ export default function AddSlot({ day }: { day: string }) {
         ...prev,
         [day]: { options, slots: newSlots },
       }));
+      setOpen(false);
+      setError('');
     },
     [lastEndTime, updateSlotContext, slots, day, options]
   );
+
   return (
     <div className="absolute right-[10%] -bottom-4 bg-white">
-      <Dialog>
-        <DialogTrigger>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogClose />
+        <DialogTrigger onClick={() => setOpen(true)}>
           <GoPlus
             className="w-[30px] h-[20px] rounded-full border border-[#D3D8DD]"
             size={24}

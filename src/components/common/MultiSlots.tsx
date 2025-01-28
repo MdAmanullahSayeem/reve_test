@@ -1,6 +1,5 @@
 import { DefaultProps } from '@/types';
 import InputRange from './InputRange';
-import Section from '../ui/Section';
 import MinSlot from './MinSlot';
 import HourSlot from './HourSlot';
 import AddSlot from './AddSlot';
@@ -21,33 +20,20 @@ export default function MultiSlots({ day }: PropTypes) {
     <>
       <div className="relative">
         {slots?.map((slot, i) => (
-          <div key={i} className="w-full">
-            <InputRange editMode={false} range={slot} />
-          </div>
+          <InputRange
+            clipPath={i !== 0}
+            key={i}
+            editMode={false}
+            range={slot}
+          />
         ))}
-        {!slots.length && (
-          <div className={`w-full`}>
-            <InputRange editMode={false} isEmpty={true} />
-          </div>
-        )}
+        {!slots.length && <InputRange editMode={false} isEmpty={true} />}
         {isAddButton && <AddSlot day={day} />}
         {isDelButton && <DelSlot day={day} />}
       </div>
-      {isMinSlot && (
-        <Section className="pt-[22px]">
-          <MinSlot strokeWidth={8} />
-        </Section>
-      )}
-      {isDashSlot && (
-        <Section className="pt-[2px]">
-          <MinSlot strokeWidth={2} />
-        </Section>
-      )}
-      {isHourSlot && (
-        <Section>
-          <HourSlot />
-        </Section>
-      )}
+      {isMinSlot && <MinSlot strokeWidth={8} className="pt-[22px] -mt-1.5" />}
+      {isDashSlot && <MinSlot strokeWidth={2} />}
+      {isHourSlot && <HourSlot />}
     </>
   );
 }

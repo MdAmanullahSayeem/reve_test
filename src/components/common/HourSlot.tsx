@@ -1,6 +1,10 @@
 import { useRef } from 'react';
 
-export default function HourSlot({ color = '#909FAC', hourGap = 2 }) {
+export default function HourSlot({
+  color = '#909FAC',
+  hourGap = 2,
+  className = '',
+}) {
   const sliderTrack = useRef<HTMLDivElement | null>(null);
   const totalHour = (24 / hourGap) | (0 + 1);
 
@@ -8,7 +12,7 @@ export default function HourSlot({ color = '#909FAC', hourGap = 2 }) {
     <div
       style={{ color: color }}
       ref={sliderTrack}
-      className={`w-full flex items-center justify-between [&>_p]:text-[10px] [&>_p]:whitespace-nowrap`}
+      className={`w-full flex items-center justify-between [&>_p]:text-[10px] [&>_p]:whitespace-nowrap ${className}`}
     >
       {[...new Array(totalHour)].map((_, i) =>
         i * hourGap === 0 || i * hourGap == 24 ? (
