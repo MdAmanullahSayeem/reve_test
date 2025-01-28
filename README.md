@@ -1,5 +1,3 @@
-# Javascript + Vite
-
 ## Getting Started
 
 ### prerequisites
@@ -8,14 +6,10 @@
 
 - npm or yarn
 
-### Browser Compatibility
-
-- Chrome 89+, Edge 89+, Firefox 89+, Safari 15+
-- Ensure the target browsers support top-level await.
-
 ### Installation
 
 ```bash
+
 git clone https://github.com/MdAmanullahSayeem/reve_test.git
 
 cd reve_test
@@ -36,12 +30,14 @@ npm run dev
 
 ### How to use the app
 
-- Filter data by category, choose number of rows (per page items), sort by Value, PeriodStart, PeriodEnd.
-- Displaying paginated data according to filter options.
+- Add/Delete predefined time slot for each day independently.
+- Displaying weekly slots in a grid view.
+- Currently add/delete only enable at first day. We need to pass flags for other's to be enabled
 
 ### Build for Production
 
 ```bash
+
 npm run build
 
 ```
