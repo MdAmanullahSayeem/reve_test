@@ -43,6 +43,7 @@
 
 .input-range input[type='range']::-webkit-slider-runnable-track {
   -webkit-appearance: none;
+  appearance: none;
   height: 6px;
 }
 
@@ -66,6 +67,7 @@
   outline: 6px solid #ffffff;
   border-radius: 100%;
   pointer-events: auto;
+  appearance: none;
   -webkit-appearance: none;
   @apply cursor-grab transition-shadow drop-shadow-sm hover:drop-shadow-md ease-in-out after:w-4 after:h-4 after:bg-red-600 after:absolute;
 }

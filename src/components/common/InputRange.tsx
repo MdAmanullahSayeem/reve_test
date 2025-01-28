@@ -74,8 +74,8 @@ export default function InputRange({
         }`}
       >
         <div className="absolute left-[30%] bottom-[24px] whitespace-nowrap text-[#253748] text-[13px]">
-          Business is offline{' '}
-          <span className="text-[#909FAC]">( +Add business hour)</span>
+          Business is offline
+          <span className="text-[#909FAC]"> ( +Add business hour)</span>
         </div>
       </div>
     );

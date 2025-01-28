@@ -9,8 +9,8 @@ export default function Schedular() {
   return (
     <div className="">
       {keys?.map((day, i) => (
-        <div key={i} className="my-16 grid grid-cols-12 justify-center">
-          <div className="col-span-2">
+        <div key={i} className="my-14 grid grid-cols-12 justify-center">
+          <div className="col-span-2 -mt-3">
             <div
               className={`w-[59px] h-[32px] rounded-full text-center place-content-center text-[13px] ${
                 hasSlots[i]

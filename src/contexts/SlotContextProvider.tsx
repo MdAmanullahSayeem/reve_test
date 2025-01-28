@@ -11,10 +11,11 @@ const slotsData: SlotsDataType = {
       isMinSlot: true,
       isDashSlot: true,
       isHourSlot: true,
+      isDelButton: true,
     },
     slots: [
       { start: 100, end: 500 },
-      { start: 700, end: 1400 },
+      { start: 700, end: 1000 },
     ],
   },
   Mon: { options: { isMinSlot: true }, slots: [{ start: 100, end: 500 }] },
