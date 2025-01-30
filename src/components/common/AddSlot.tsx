@@ -1,9 +1,8 @@
 import { useCallback, useState } from 'react';
 import {
   Dialog,
-  DialogClose,
   DialogContent,
-  DialogTitle,
+  DialogOverlay,
   DialogTrigger,
 } from '../ui/dialog';
 import { GoPlus } from 'react-icons/go';
@@ -12,6 +11,8 @@ import { Input } from '../ui/input';
 import SingleSlot from './SingleSlot';
 import { RangeDataType } from '@/types';
 import { useSlotContext } from '@/hooks/useSlotContext';
+import { GoX } from 'react-icons/go';
+import OverFlow from '../ui/OverFlow';
 
 export default function AddSlot({ day }: { day: string }) {
   const [open, setOpen] = useState(false);
@@ -41,7 +42,7 @@ export default function AddSlot({ day }: { day: string }) {
   return (
     <div className="absolute right-[10%] -bottom-4 bg-white">
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogClose />
+        <DialogOverlay className="dialog-overlay" />
         <DialogTrigger onClick={() => setOpen(true)}>
           <GoPlus
             className="w-[30px] h-[20px] rounded-full border border-[#D3D8DD]"
@@ -50,20 +51,35 @@ export default function AddSlot({ day }: { day: string }) {
         </DialogTrigger>
         <DialogContent
           aria-describedby="slot input"
-          className="p-10 left-[50%] !-top-[50%] data-[state=open]:!top-[70%] "
+          className="unstyled-dialog"
         >
-          <DialogTitle aria-labelledby="slot input" />
-          <AddSlotForm onSubmit={handleFormData}>
-            <>
-              <Input
-                className="mb-4 outline-none focus-within:outline-none"
-                type="date"
-                name="date"
-              />
-              <SingleSlot className="py-10" />
-              {error && <p className="mb-4 text-yellow-400">{error}</p>}
-            </>
-          </AddSlotForm>
+          <div className="dialog-content p-4">
+            <div className="bg-white rounded-[8px] p-8">
+              <div className="p-[2px] absolute bg-white  top-0 right-0 rounded-full opacity-90 cursor-pointer hover:shadow-gray-400 shadow-gray-500 shadow-sm">
+                <GoX
+                  onClick={() => setOpen(false)}
+                  size={32}
+                  color="#647491"
+                  className="hover:bg-blue-100 rounded-full p-[2px]"
+                />
+              </div>
+
+              <AddSlotForm onSubmit={handleFormData} className="">
+                <OverFlow>
+                  <>
+                    <Input
+                      className="mb-4 outline-none border-[#d3dbe5] border-2 hover:border-[#acb8cb] focus-visible:ring-0"
+                      type="date"
+                      name="date"
+                    />
+
+                    <SingleSlot className="py-10" />
+                    {error && <p className="mb-4 text-yellow-400">{error}</p>}
+                  </>
+                </OverFlow>
+              </AddSlotForm>
+            </div>
+          </div>
         </DialogContent>
       </Dialog>
     </div>

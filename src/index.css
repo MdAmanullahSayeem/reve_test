@@ -26,19 +26,44 @@
   .over-flow-container::-webkit-scrollbar-thumb {
     @apply bg-slate-700 rounded-sm;
   }
+}
 
-  @keyframes slideDown {
-    0% {
-      transform: translateY(-100%);
-      opacity: 0;
-    }
-    100% {
-      transform: translateY(0);
-      opacity: 1;
-    }
+@layer utilities {
+  .unstyled-dialog {
+    all: unset !important;
+    display: block !important;
+    pointer-events: auto !important;
   }
 
-  .animate-in {
-    animation: slideDown 0.4s ease-out forwards;
+  .dialog-overlay {
+    position: fixed;
+    inset: 0px;
+    background-color: rgba(8, 15, 26, 0.8);
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.15s linear;
+  }
+
+  [data-state='open'] .dialog-overlay {
+    opacity: 1;
+  }
+
+  .dialog-content {
+    position: fixed;
+    left: 50%;
+    top: 15%;
+    transform: translateX(-50%);
+    opacity: 0;
+    z-index: 100;
+    animation: slideDown 0.15s ease-out forwards 0.2s;
+    border-radius: 8px;
+    @apply w-[400px] sm:w-[600px] md:w-[760px];
+  }
+
+  @keyframes slideDown {
+    100% {
+      top: 30%;
+      opacity: 1;
+    }
   }
 }
