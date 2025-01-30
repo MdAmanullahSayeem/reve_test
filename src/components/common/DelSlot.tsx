@@ -11,19 +11,10 @@ import {
 } from '@/components/ui/alert-dialog';
 import DelIcon from '@/assets/TrashSimple.svg';
 import { useSlotContext } from '@/hooks/useSlotContext';
-import { useCallback } from 'react';
 
 export default function DelSlot({ day }: { day: string }) {
-  const { updateSlotContext, slotContext } = useSlotContext();
-  const { slots, options } = slotContext[day] || {};
-
-  const handleDelete = useCallback(() => {
-    const newSlots = slots.slice(1);
-    updateSlotContext((prev) => ({
-      ...prev,
-      [day]: { options, slots: newSlots },
-    }));
-  }, [day, options, updateSlotContext, slots]);
+  const { delSlot, slotContext } = useSlotContext();
+  const { slots } = slotContext[day] || {};
 
   return (
     <AlertDialog>
@@ -41,7 +32,9 @@ export default function DelSlot({ day }: { day: string }) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleDelete}>Continue</AlertDialogAction>
+          <AlertDialogAction onClick={() => delSlot(slots[0])}>
+            Continue
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

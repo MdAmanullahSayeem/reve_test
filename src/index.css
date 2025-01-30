@@ -26,4 +26,19 @@
   .over-flow-container::-webkit-scrollbar-thumb {
     @apply bg-slate-700 rounded-sm;
   }
+
+  @keyframes slideDown {
+    0% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .animate-in {
+    animation: slideDown 0.4s ease-out forwards;
+  }
 }

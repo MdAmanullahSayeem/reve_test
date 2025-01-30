@@ -6,6 +6,7 @@ export interface DefaultProps {
 }
 
 export interface RangeDataType {
+  id: string;
   start: number;
   end: number;
   date?: string;

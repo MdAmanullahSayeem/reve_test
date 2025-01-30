@@ -15,27 +15,27 @@ import { useSlotContext } from '@/hooks/useSlotContext';
 
 export default function AddSlot({ day }: { day: string }) {
   const [open, setOpen] = useState(false);
-  const { updateSlotContext, slotContext } = useSlotContext();
-  const { slots, options } = slotContext[day];
+  const { addSlot, slotContext } = useSlotContext();
+  const { slots } = slotContext[day];
   const [error, setError] = useState('');
-  const lastEndTime = slots[slots.length - 1].end;
 
   const handleFormData = useCallback(
     (data: RangeDataType) => {
-      const { start } = data;
-      if (start <= lastEndTime) {
+      const { start, end, date } = data;
+      const nextSlot = slots.find((slot) => slot.start > start); //last
+      const prevSlot = [...slots].reverse().find((slot) => slot.start < start);
+      const isValid =
+        start > (prevSlot?.end || -1) && end < (nextSlot?.start || Infinity);
+      if (!isValid) {
         setError('Slot is already filled');
         return;
       }
-      const newSlots = [...slots, data];
-      updateSlotContext((prev) => ({
-        ...prev,
-        [day]: { options, slots: newSlots },
-      }));
+      const nextId = day + '_' + (slots.length + 1);
+      addSlot({ date, start: Number(start), end: Number(end), id: nextId });
       setOpen(false);
       setError('');
     },
-    [lastEndTime, updateSlotContext, slots, day, options]
+    [addSlot, day, slots]
   );
 
   return (
@@ -48,7 +48,10 @@ export default function AddSlot({ day }: { day: string }) {
             size={24}
           />
         </DialogTrigger>
-        <DialogContent aria-describedby="slot input" className="p-10">
+        <DialogContent
+          aria-describedby="slot input"
+          className="p-10 left-[50%] !-top-[50%] data-[state=open]:!top-[70%] "
+        >
           <DialogTitle aria-labelledby="slot input" />
           <AddSlotForm onSubmit={handleFormData}>
             <>

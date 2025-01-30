@@ -12,7 +12,7 @@ interface PropTypes extends DefaultProps {
 
 export default function MultiSlots({ day }: PropTypes) {
   const { slotContext } = useSlotContext();
-  const { options, slots } = slotContext[day];
+  const { options = {}, slots = [] } = slotContext[day];
   const { isAddButton, isDelButton, isDashSlot, isMinSlot, isHourSlot } =
     options;
 
@@ -21,10 +21,10 @@ export default function MultiSlots({ day }: PropTypes) {
       <div className="relative">
         {slots?.map((slot, i) => (
           <InputRange
-            clipPath={i !== 0}
-            key={i}
-            editMode={false}
-            range={slot}
+            key={slot.id + i}
+            slot={slot}
+            nextStart={slots[i + 1]?.start}
+            prevEnd={slots[i - 1]?.end}
           />
         ))}
         {!slots.length && <InputRange editMode={false} isEmpty={true} />}

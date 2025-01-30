@@ -2,33 +2,41 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import './InputRange.css';
 import { RangeDataType } from '@/types';
 import { minToTimeString } from '@/utils/helper';
+import { useSlotContext } from '@/hooks/useSlotContext';
 
 type PropTypes = {
   fill?: string;
   track?: string;
   editMode?: boolean;
   minGap?: number;
-  range?: RangeDataType;
+  slot?: RangeDataType;
   min?: number;
   max?: number;
   step?: number;
   isEmpty?: boolean;
   clipPath?: boolean;
+  nextStart?: number;
+  prevEnd?: number;
+  day?: string;
+  formElement?: boolean;
 };
 
 export default function InputRange({
   fill = '#266AFF',
   track = '#E6EAED',
   editMode = true,
+  formElement = false,
   minGap = 20,
   min = 0,
   max = 1440,
   step = 10,
-  range = { start: 60, end: 75 },
+  slot = { id: 'Sun_1', start: 60, end: 75 },
   isEmpty = false,
-  clipPath = false,
+  nextStart = 1440,
+  prevEnd = 0,
 }: PropTypes) {
-  const [currentRange, updateCurrentRange] = useState({ ...range });
+  const [currentRange, updateCurrentRange] = useState(slot);
+  const { updateSlot } = useSlotContext();
   const { start, end } = currentRange;
 
   const slider1 = useRef<HTMLInputElement | null>(null);
@@ -61,10 +69,10 @@ export default function InputRange({
     startRef.current.style.left = `calc(${percent1}% + ${reduce1}px)`;
     endRef.current.style.left = `calc(${percent2}% + ${reduce2}px)`;
     sliderTrack.current.style.background = `linear-gradient(to right, ${track} ${percent1}% ,${fill} ${percent1}%, ${fill} ${percent2}% , ${track} ${percent2}%, ${track} 100%)`;
-    if (clipPath) {
+    if (prevEnd) {
       sliderTrack.current.style.clipPath = `inset(0 0 0 ${percent1}%)`;
     }
-  }, [fill, track, start, end, max, isEmpty, clipPath]);
+  }, [fill, track, start, end, prevEnd, max, isEmpty]);
 
   useEffect(() => {
     fillColor();
@@ -106,9 +114,12 @@ export default function InputRange({
         max={max}
         value={start}
         name="start"
+        onMouseUp={() => !formElement && updateSlot(currentRange)}
         onChange={(e) =>
           updateCurrentRange((prev) =>
-            editMode && Number(e.target.value) < end - minGap
+            editMode &&
+            Number(e.target.value) < end - minGap &&
+            Number(e.target.value) > prevEnd
               ? { ...prev, start: Number(e.target.value) }
               : prev
           )
@@ -122,9 +133,12 @@ export default function InputRange({
         step={step}
         name="end"
         value={end}
+        onMouseUp={() => !formElement && updateSlot(currentRange)}
         onChange={(e) =>
           updateCurrentRange((prev) =>
-            editMode && Number(e.target.value) > start + minGap
+            editMode &&
+            Number(e.target.value) > start + minGap &&
+            Number(e.target.value) < nextStart
               ? { ...prev, end: Number(e.target.value) }
               : prev
           )

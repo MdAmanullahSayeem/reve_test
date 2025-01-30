@@ -1,36 +1,13 @@
 import { DefaultProps } from '@/types';
-import { useState } from 'react';
 import { SlotContext } from './SlotContext';
-
-import { SlotsDataType } from '@/types';
-
-const slotsData: SlotsDataType = {
-  Sun: {
-    options: {
-      isAddButton: true,
-      isMinSlot: true,
-      isDashSlot: true,
-      isHourSlot: true,
-      isDelButton: true,
-    },
-    slots: [
-      { start: 100, end: 500 },
-      { start: 700, end: 1000 },
-    ],
-  },
-  Mon: { options: { isMinSlot: true }, slots: [{ start: 100, end: 500 }] },
-  Tue: { options: { isMinSlot: true }, slots: [] },
-  Wed: { options: { isMinSlot: true }, slots: [{ start: 100, end: 500 }] },
-  Thr: { options: { isMinSlot: true }, slots: [{ start: 100, end: 500 }] },
-  Fri: { options: { isMinSlot: true }, slots: [] },
-  Sat: { options: { isMinSlot: true }, slots: [] },
-};
+import { useSlots } from '@/hooks/useSlots';
 
 export default function SlotContextProvider({ children }: DefaultProps) {
-  const [slotContext, updateSlotContext] = useState(slotsData);
+  const { slotContext, updateSlot, addSlot, delSlot } = useSlots();
+  console.log(slotContext);
 
   return (
-    <SlotContext.Provider value={{ slotContext, updateSlotContext }}>
+    <SlotContext.Provider value={{ slotContext, updateSlot, addSlot, delSlot }}>
       {children}
     </SlotContext.Provider>
   );

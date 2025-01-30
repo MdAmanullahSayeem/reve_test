@@ -11,7 +11,7 @@ interface PropTypes extends DefaultProps {
 export default function SingleSlot({ className = '', slot }: PropTypes) {
   return (
     <div className={`${className}`}>
-      <InputRange range={slot} />
+      <InputRange formElement={true} slot={slot} />
       <Section className="pt-4">
         <MinSlot strokeWidth={8} />
       </Section>

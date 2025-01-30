@@ -1,23 +1,32 @@
-import { SlotsDataType } from '@/types';
-import { createContext, Dispatch, SetStateAction } from 'react';
+import { RangeDataType, SlotsDataType } from '@/types';
+import { createContext } from 'react';
 
 interface SlotContextType {
   slotContext: SlotsDataType;
-  updateSlotContext: Dispatch<SetStateAction<SlotsDataType>>;
+  updateSlot: (data: RangeDataType) => void;
+  addSlot: (data: RangeDataType) => void;
+  delSlot: (data: RangeDataType) => void;
 }
 
 const defaultData: SlotContextType = {
   slotContext: {
-    Jan: {
-      options: {},
+    Sun: {
+      options: {
+        isAddButton: true,
+        isMinSlot: true,
+        isDashSlot: true,
+        isHourSlot: true,
+        isDelButton: true,
+      },
       slots: [
-        { start: 100, end: 500 },
-        { start: 700, end: 1400 },
+        { id: 'Sun_1', start: 100, end: 500 },
+        { id: 'Sun_2', start: 700, end: 1000 },
       ],
     },
-    Feb: { options: {}, slots: [{ start: 100, end: 500 }] },
   },
-  updateSlotContext: () => {},
+  updateSlot: () => {},
+  delSlot: () => {},
+  addSlot: () => {},
 };
 
 export const SlotContext = createContext<SlotContextType>(defaultData);
