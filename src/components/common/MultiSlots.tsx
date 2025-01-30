@@ -29,7 +29,7 @@ export default function MultiSlots({ day }: PropTypes) {
         ))}
         {!slots.length && <InputRange editMode={false} isEmpty={true} />}
         {isAddButton && <AddSlot day={day} />}
-        {isDelButton && <DelSlot day={day} />}
+        {isDelButton && !!slots.length && <DelSlot day={day} />}
       </div>
       {isMinSlot && <MinSlot strokeWidth={8} className="pt-[22px] -mt-1.5" />}
       {isDashSlot && <MinSlot strokeWidth={2} />}

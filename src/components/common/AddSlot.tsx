@@ -22,8 +22,8 @@ export default function AddSlot({ day }: { day: string }) {
   const handleFormData = useCallback(
     (data: RangeDataType) => {
       const { start, end, date } = data;
-      const nextSlot = slots.find((slot) => slot.start > start); //last
-      const prevSlot = [...slots].reverse().find((slot) => slot.start < start);
+      const nextSlot = slots.find((slot) => slot.start >= start); //last
+      const prevSlot = [...slots].reverse().find((slot) => slot.start <= start);
       const isValid =
         start > (prevSlot?.end || -1) && end < (nextSlot?.start || Infinity);
       if (!isValid) {
