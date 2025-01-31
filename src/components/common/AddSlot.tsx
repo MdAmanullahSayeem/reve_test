@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogOverlay,
   DialogTrigger,
@@ -43,6 +44,7 @@ export default function AddSlot({ day }: { day: string }) {
     <div className="absolute right-[10%] -bottom-4 bg-white">
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogOverlay className="dialog-overlay" />
+        <DialogClose className="hidden" />
         <DialogTrigger onClick={() => setOpen(true)}>
           <GoPlus
             className="w-[30px] h-[20px] rounded-full border border-[#D3D8DD]"
