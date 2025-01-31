@@ -13,7 +13,6 @@ import SingleSlot from './SingleSlot';
 import { RangeDataType } from '@/types';
 import { useSlotContext } from '@/hooks/useSlotContext';
 import { GoX } from 'react-icons/go';
-import OverFlow from '../ui/OverFlow';
 
 export default function AddSlot({ day }: { day: string }) {
   const [open, setOpen] = useState(false);
@@ -56,7 +55,7 @@ export default function AddSlot({ day }: { day: string }) {
           className="unstyled-dialog"
         >
           <div className="dialog-content p-4">
-            <div className="bg-white rounded-[8px] p-8">
+            <div className="bg-white rounded-[8px] px-2 py-8 sm:p-8">
               <div className="p-[2px] absolute bg-white  top-0 right-0 rounded-full opacity-90 cursor-pointer hover:shadow-gray-400 shadow-gray-500 shadow-sm">
                 <GoX
                   onClick={() => setOpen(false)}
@@ -67,18 +66,20 @@ export default function AddSlot({ day }: { day: string }) {
               </div>
 
               <AddSlotForm onSubmit={handleFormData} className="">
-                <OverFlow>
-                  <>
-                    <Input
-                      className="mb-4 outline-none border-[#d3dbe5] border-2 hover:border-[#acb8cb] focus-visible:ring-0"
-                      type="date"
-                      name="date"
-                    />
+                <>
+                  <Input
+                    className="mb-16 outline-none border-[#d3dbe5] border-2 hover:border-[#acb8cb] focus-visible:ring-0"
+                    type="date"
+                    name="date"
+                  />
 
-                    <SingleSlot className="py-10" />
-                    {error && <p className="mb-4 text-yellow-400">{error}</p>}
-                  </>
-                </OverFlow>
+                  <SingleSlot className="mb-6" />
+                  {error && (
+                    <p className="mb-4 -mt-4 text-yellow-400 text-sm">
+                      {error}
+                    </p>
+                  )}
+                </>
               </AddSlotForm>
             </div>
           </div>
