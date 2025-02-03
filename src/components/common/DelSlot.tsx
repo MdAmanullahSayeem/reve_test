@@ -31,6 +31,7 @@ export default function DelSlot({
       className={`del-icon ${className}`}
     >
       <img src={DelIcon} alt="DelIcon" />
+      <div className="popup">Delete this time period</div>
     </div>
   );
 }

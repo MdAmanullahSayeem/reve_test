@@ -138,3 +138,37 @@
   opacity: 0;
   transition: all 0.4s cubic-bezier(0.785, 0.135, 0.15, 0.86);
 }
+
+.del-icon .popup,
+.add-icon .popup {
+  position: absolute;
+  bottom: 180%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #253748;
+  color: white;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 13px;
+  white-space: nowrap;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.del-icon .popup::after,
+.add-icon .popup::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 8px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+.del-icon:hover .popup,
+.add-icon:hover .popup {
+  visibility: visible;
+  opacity: 1;
+}
