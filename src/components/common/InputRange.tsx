@@ -119,7 +119,7 @@ export default function InputRange({
       <div
         onMouseEnter={handleMouseEnter}
         ref={sliderTrack}
-        className="slider-track relative cursor-pointer z-10"
+        className="slider-track relative cursor-default z-10"
       ></div>
       <div className="label" ref={startRef}>
         <div>
