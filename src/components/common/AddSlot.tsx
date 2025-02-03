@@ -41,6 +41,7 @@ export default function AddSlot({
             className={`add-icon opacity-${opacity[0]} ${className}`}
           >
             <GoPlus size={22} color="#6F8294" />
+            <div className="popup">Add new time slot</div>
           </div>
         )}
         {max - end > min_gap && (
@@ -57,6 +58,7 @@ export default function AddSlot({
             className={`add-icon opacity-${opacity[1]} ${className}`}
           >
             <GoPlus size={22} color="#6F8294" />
+            <div className="popup">Add new time slot</div>
           </div>
         )}
       </>
@@ -76,6 +78,7 @@ export default function AddSlot({
       className={`add-icon opacity-${opacity[0]} ${className}`}
     >
       <GoPlus size={22} color="#6F8294" />
+      <div className="popup">Add new time slot</div>
     </div>
   );
 }

@@ -12,7 +12,7 @@ export default function Schedular() {
       <div className="min-w-[768px] p-4 lg:p-16">
         {keys?.map((day, i) => (
           <div key={i} className="my-14 grid grid-cols-12 gap-2 justify-center">
-            <div className="col-span-1 -mt-4">
+            <div className="col-span-1 -mt-[14px]">
               <div
                 className={`w-[59px] h-[32px] rounded-full text-center place-content-center text-[13px] ${
                   hasSlots[i]
