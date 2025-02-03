@@ -20,9 +20,6 @@
   bottom: 0;
   border-radius: 3px;
 }
-.input-range.edit .slider-track {
-  border-radius: 3px;
-}
 
 .input-range .label {
   width: 2px;
@@ -31,13 +28,15 @@
   content: '';
   position: absolute;
   transform: translateX(-50%);
-  top: 18px;
+  top: 11px;
+  z-index: 1;
 }
 .input-range .label > div {
   font-size: 14px;
+  font-weight: bold;
   white-space: nowrap;
   position: absolute;
-  bottom: 52px;
+  bottom: 32px;
   left: -20px;
 }
 
@@ -58,13 +57,13 @@
 
 .input-range input[type='range']::-webkit-slider-thumb {
   position: relative;
-  z-index: 2;
-  margin-top: -9px;
-  width: 24px;
-  height: 24px;
-  border: 6px solid #266aff;
+  z-index: 20;
+  margin-top: -7px;
+  width: 18px;
+  height: 18px;
+  border: 3px solid #266aff;
   background-color: #ffffff;
-  outline: 6px solid #ffffff;
+  outline: 3px solid #ffffff;
   border-radius: 100%;
   pointer-events: auto;
   appearance: none;
@@ -73,12 +72,12 @@
 }
 
 .input-range input[type='range']::-moz-range-thumb {
-  margin-top: -9px;
-  width: 24px;
-  height: 24px;
-  border: 6px solid #266aff;
+  margin-top: -7px;
+  width: 18px;
+  height: 18px;
+  border: 3px solid #266aff;
   background-color: #ffffff;
-  outline: 6px solid #ffffff;
+  outline: 3px solid #ffffff;
   border-radius: 100%;
   pointer-events: auto;
   appearance: none;
@@ -86,21 +85,47 @@
 }
 
 .input-range input[type='range']::-ms-thumb {
-  margin-top: -9px;
-  width: 24px;
-  height: 24px;
-  border: 6px solid #266aff;
+  margin-top: -7px;
+  width: 18px;
+  height: 18px;
+  border: 3px solid #266aff;
   background-color: #ffffff;
-  outline: 6px solid #ffffff;
+  outline: 3px solid #ffffff;
   border-radius: 100%;
   pointer-events: auto;
   appearance: none;
   @apply cursor-grab transition-shadow drop-shadow-sm hover:drop-shadow-md ease-in-out;
 }
 
-.input-range div {
-  position: absolute;
-  width: 2px;
-  height: 8px;
-  display: block;
+.isEmpty .text-label {
+  @apply absolute left-[30%] bottom-4 whitespace-nowrap text-[#253748] text-[13px];
+}
+
+.add-icon {
+  box-shadow: rgba(0, 20, 51, 0.24) 0px 8px 20px;
+  @apply z-10  absolute w-[30px] bottom-0 h-[22px]  cursor-pointer flex items-center justify-center rounded-full border border-[#D3D8DD] bg-white;
+}
+
+.add-icon.opacity-100 {
+  bottom: -9px;
+  transition: all 0.4s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+}
+
+.del-icon {
+  box-shadow: rgba(0, 20, 51, 0.24) 0px 8px 20px;
+  @apply z-10 absolute top-0 cursor-pointer flex items-center justify-center w-9 h-9 rounded-lg bg-white;
+}
+.del-icon.opacity-100 {
+  top: 12px;
+  transition: all 0.4s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+}
+
+.isEmpty .text-label {
+  opacity: 1;
+  transition: all 0.4s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+  @apply absolute left-[30%] bottom-4 whitespace-nowrap text-[#253748] text-[13px];
+}
+
+.add-icon.opacity-100 + .isEmpty .text-label {
+  opacity: 0;
 }

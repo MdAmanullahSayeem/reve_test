@@ -3,11 +3,13 @@ import './InputRange.css';
 import { RangeDataType } from '@/types';
 import { minToTimeString } from '@/utils/helper';
 import { useSlotContext } from '@/hooks/useSlotContext';
+import DelSlot from './DelSlot';
+import MinSlot from './MinSlot';
+import HourSlot from './HourSlot';
 
 type PropTypes = {
   fill?: string;
   track?: string;
-  editMode?: boolean;
   minGap?: number;
   slot?: RangeDataType;
   min?: number;
@@ -19,14 +21,14 @@ type PropTypes = {
   prevEnd?: number;
   day?: string;
   formElement?: boolean;
+  opacity?: number;
+  restOpacity?: () => void;
 };
 
 export default function InputRange({
   fill = '#266AFF',
   track = '#E6EAED',
-  editMode = true,
-  formElement = false,
-  minGap = 20,
+  minGap = 10,
   min = 0,
   max = 1440,
   step = 10,
@@ -34,8 +36,12 @@ export default function InputRange({
   isEmpty = false,
   nextStart = 1440,
   prevEnd = 0,
+  opacity = 0,
+  restOpacity = () => {},
 }: PropTypes) {
   const [currentRange, updateCurrentRange] = useState(slot);
+  const [isHrOp, setIsHrOp] = useState(0);
+
   const { updateSlot } = useSlotContext();
   const { start, end } = currentRange;
 
@@ -48,10 +54,23 @@ export default function InputRange({
   const startProps = minToTimeString(start);
   const endProps = minToTimeString(end);
 
+  const handleThumbUp = useCallback(() => {
+    setIsHrOp(0);
+    updateSlot(currentRange);
+  }, [currentRange, updateSlot]);
+
+  const handleThumbDown = useCallback(() => {
+    setIsHrOp(100);
+    restOpacity();
+  }, [restOpacity]);
+
+  const handleMouseEnter = useCallback(() => {
+    setIsHrOp(0);
+  }, []);
+
   const fillColor = useCallback(() => {
     if (isEmpty && emptyRef.current) {
       emptyRef.current.style.background = track;
-      emptyRef.current.style.height = '6px';
       return;
     }
     if (
@@ -68,11 +87,11 @@ export default function InputRange({
     const reduce2 = 10 - 20 * percent2 * 0.01;
     startRef.current.style.left = `calc(${percent1}% + ${reduce1}px)`;
     endRef.current.style.left = `calc(${percent2}% + ${reduce2}px)`;
-    sliderTrack.current.style.background = `linear-gradient(to right, ${track} ${percent1}% ,${fill} ${percent1}%, ${fill} ${percent2}% , ${track} ${percent2}%, ${track} 100%)`;
-    if (prevEnd) {
-      sliderTrack.current.style.clipPath = `inset(0 0 0 ${percent1}%)`;
-    }
-  }, [fill, track, start, end, prevEnd, max, isEmpty]);
+    sliderTrack.current.style.clipPath = `inset(0 ${
+      100 - percent2
+    }% 0 ${percent1}%)`;
+    sliderTrack.current.style.background = `${fill}`;
+  }, [fill, track, start, end, max, isEmpty]);
 
   useEffect(() => {
     fillColor();
@@ -80,30 +99,36 @@ export default function InputRange({
 
   if (isEmpty)
     return (
-      <div
-        ref={emptyRef}
-        className={`input-range isEmpty rounded-[3px] relative bg-[${track}] ${
-          editMode && 'edit'
-        }`}
-      >
-        <div className="absolute left-[30%] bottom-[24px] whitespace-nowrap text-[#253748] text-[13px]">
+      <div ref={emptyRef} className={`input-range isEmpty relative top-[2px]`}>
+        <div className="text-label">
           Business is offline
           <span className="text-[#909FAC]"> ( +Add business hour)</span>
         </div>
+        <MinSlot strokeWidth={8} className="absolute pt-[22px] -mt-3" />
+        <MinSlot strokeWidth={2} className="absolute pt-[22px] -mt-[2px]" />
+        <HourSlot className={`absolute top-6 opacity-${isHrOp}`} />
       </div>
     );
 
   return (
-    <div className={`input-range relative ${editMode && 'edit'}`}>
-      <div ref={sliderTrack} className="slider-track"></div>
+    <div className={`input-range relative top-[2px]`}>
+      <MinSlot strokeWidth={8} className="absolute pt-[22px] -mt-3" />
+      <MinSlot strokeWidth={2} className="absolute pt-[22px] -mt-[2px]" />
+      <DelSlot max={max} slot={slot} className={`opacity-${opacity}`} />
+      <HourSlot className={`absolute top-6 opacity-${isHrOp}`} />
+      <div
+        onMouseEnter={handleMouseEnter}
+        ref={sliderTrack}
+        className="slider-track relative cursor-pointer z-10"
+      ></div>
       <div className="label" ref={startRef}>
         <div>
-          {startProps.hr}:{startProps.min} {startProps.amp}
+          {startProps.hr}:{startProps.min || '00'} {startProps.amp}
         </div>
       </div>
       <div className="label" ref={endRef}>
         <div>
-          {endProps.hr}:{endProps.min} {endProps.amp}
+          {endProps.hr}:{endProps.min || '00'} {endProps.amp}
         </div>
       </div>
       <input
@@ -114,10 +139,10 @@ export default function InputRange({
         max={max}
         value={start}
         name="start"
-        onMouseUp={() => !formElement && updateSlot(currentRange)}
+        onMouseUp={handleThumbUp}
+        onMouseDown={handleThumbDown}
         onChange={(e) =>
           updateCurrentRange((prev) =>
-            editMode &&
             Number(e.target.value) < end - minGap &&
             Number(e.target.value) > prevEnd
               ? { ...prev, start: Number(e.target.value) }
@@ -133,10 +158,10 @@ export default function InputRange({
         step={step}
         name="end"
         value={end}
-        onMouseUp={() => !formElement && updateSlot(currentRange)}
+        onMouseUp={handleThumbUp}
+        onMouseDown={handleThumbDown}
         onChange={(e) =>
           updateCurrentRange((prev) =>
-            editMode &&
             Number(e.target.value) > start + minGap &&
             Number(e.target.value) < nextStart
               ? { ...prev, end: Number(e.target.value) }

@@ -1,90 +1,81 @@
-import { useCallback, useState } from 'react';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogOverlay,
-  DialogTrigger,
-} from '../ui/dialog';
 import { GoPlus } from 'react-icons/go';
-import AddSlotForm from '../ui/forms/AddSlotForm';
-import { Input } from '../ui/input';
-import SingleSlot from './SingleSlot';
-import { RangeDataType } from '@/types';
 import { useSlotContext } from '@/hooks/useSlotContext';
-import { GoX } from 'react-icons/go';
 
-export default function AddSlot({ day }: { day: string }) {
-  const [open, setOpen] = useState(false);
-  const { addSlot, slotContext } = useSlotContext();
-  const { slots } = slotContext[day];
-  const [error, setError] = useState('');
+export default function AddSlot({
+  day,
+  opacity = [0, 0],
+  max = 1440,
+  className = '',
+}: {
+  day: string;
+  max?: number;
+  className?: string;
+  opacity?: number[];
+}) {
+  const { slotContext, addSlot } = useSlotContext();
+  const { slots = [] } = slotContext[day];
 
-  const handleFormData = useCallback(
-    (data: RangeDataType) => {
-      const { start, end, date } = data;
-      const nextSlot = slots.find((slot) => slot.start >= start); //last
-      const prevSlot = [...slots].reverse().find((slot) => slot.start <= start);
-      const isValid =
-        start > (prevSlot?.end || -1) && end < (nextSlot?.start || Infinity);
-      if (!isValid) {
-        setError('Slot is already filled');
-        return;
-      }
-      const nextId = day + '_' + (slots.length + 1);
-      addSlot({ date, start: Number(start), end: Number(end), id: nextId });
-      setOpen(false);
-      setError('');
-    },
-    [addSlot, day, slots]
-  );
+  const {
+    start = 0,
+    end = max,
+    id,
+  } = slots[slots.length - 1] || { start: 0, end: max, id: `${day}_${0}` };
+  const min_gap = 120;
+  const nextId = day + '_' + (id.split('_')[1] + 1);
 
-  return (
-    <div className="absolute right-[10%] -bottom-4 bg-white">
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogOverlay className="dialog-overlay" />
-        <DialogClose className="hidden" />
-        <DialogTrigger onClick={() => setOpen(true)}>
-          <GoPlus
-            className="w-[30px] h-[20px] rounded-full border border-[#D3D8DD]"
-            size={24}
-          />
-        </DialogTrigger>
-        <DialogContent
-          aria-describedby="slot input"
-          className="unstyled-dialog"
-        >
-          <div className="dialog-content p-4">
-            <div className="bg-white rounded-[8px] px-2 py-8 sm:p-8">
-              <div className="p-[2px] absolute bg-white  top-0 right-0 rounded-full opacity-90 cursor-pointer hover:shadow-gray-400 shadow-gray-500 shadow-sm">
-                <GoX
-                  onClick={() => setOpen(false)}
-                  size={32}
-                  color="#647491"
-                  className="hover:bg-blue-100 rounded-full p-[2px]"
-                />
-              </div>
-
-              <AddSlotForm onSubmit={handleFormData} className="">
-                <>
-                  <Input
-                    className="mb-16 outline-none border-[#d3dbe5] border-2 hover:border-[#acb8cb] focus-visible:ring-0"
-                    type="date"
-                    name="date"
-                  />
-
-                  <SingleSlot className="mb-6" />
-                  {error && (
-                    <p className="mb-4 -mt-4 text-yellow-400 text-sm">
-                      {error}
-                    </p>
-                  )}
-                </>
-              </AddSlotForm>
-            </div>
+  if (slots.length > 1) return null;
+  if (slots.length) {
+    return (
+      <>
+        {start > 110 && (
+          <div
+            onClick={() =>
+              addSlot({
+                start: (0 + start * 20 * 0.01) | 0,
+                end: (start - start * 20 * 0.01) | 0,
+                date: '',
+                id: nextId,
+              })
+            }
+            style={{ left: `${(((start / 2) | 0) * 100) / max - 2}%` }}
+            className={`add-icon opacity-${opacity[0]} ${className}`}
+          >
+            <GoPlus size={22} color="#6F8294" />
           </div>
-        </DialogContent>
-      </Dialog>
+        )}
+        {max - end > min_gap && (
+          <div
+            onClick={() =>
+              addSlot({
+                start: (end + (max - end) * 20 * 0.01) | 0,
+                end: (max - (max - end) * 20 * 0.01) | 0,
+                date: '',
+                id: nextId,
+              })
+            }
+            style={{ left: `${((end + (max - end) / 2) * 100) / max}%` }}
+            className={`add-icon opacity-${opacity[1]} ${className}`}
+          >
+            <GoPlus size={22} color="#6F8294" />
+          </div>
+        )}
+      </>
+    );
+  }
+  return (
+    <div
+      onClick={() =>
+        addSlot({
+          start: (0 + max * 20 * 0.01) | 0,
+          end: (max - max * 20 * 0.01) | 0,
+          date: '',
+          id: nextId,
+        })
+      }
+      style={{ left: `${((max / 2) * 100) / max}%` }}
+      className={`add-icon opacity-${opacity[0]} ${className}`}
+    >
+      <GoPlus size={22} color="#6F8294" />
     </div>
   );
 }

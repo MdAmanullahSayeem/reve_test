@@ -23,7 +23,7 @@ export default function Schedular() {
                 {day}
               </div>
             </div>
-            <div className="col-span-11">
+            <div className="col-span-11 ">
               <MultiSlots day={day} />
             </div>
           </div>

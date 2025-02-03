@@ -1,3 +1,4 @@
+import { minToTimeString } from '@/utils/helper';
 import { useRef } from 'react';
 
 export default function HourSlot({
@@ -14,15 +15,13 @@ export default function HourSlot({
       ref={sliderTrack}
       className={`w-full flex items-center justify-between [&>_p]:text-[10px] [&>_p]:whitespace-nowrap ${className}`}
     >
-      {[...new Array(totalHour)].map((_, i) =>
-        i * hourGap === 0 || i * hourGap == 24 ? (
-          <p key={i}>12 AM</p>
-        ) : i * hourGap < 12 ? (
-          <p key={i}>{i * hourGap} AM</p>
-        ) : (
-          <p key={i}>{i * hourGap} PM</p>
-        )
-      )}
+      {[...new Array(totalHour)].map((_, i) => (
+        <p key={i}>
+          {minToTimeString(i * hourGap * 60).hr +
+            ' ' +
+            minToTimeString(i * hourGap * 60).amp}
+        </p>
+      ))}
     </div>
   );
 }
